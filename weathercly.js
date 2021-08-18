@@ -284,7 +284,7 @@ void async function () {
     /* Check if the user passed the key flag, if so, create an .env file with the key, print the key and exit */
     if (argv['k']) {
         let key = argv['k'];
-        await fs.writeFileSync(__dirname + '../.env', 'api_key=' + key, (err) => {
+        await fs.writeFileSync(path.resolve(__dirname, '../.env'), 'api_key=' + key, (err) => {
             if (err) {
                 console.log(chalk.red('Error: ' + err));
                 process.exit(1);
