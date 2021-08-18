@@ -1,0 +1,26 @@
+{
+  "name": "weathercly",
+  "version": "1.0.0",
+  "description": "A cli for getting the weather",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "weathercly": "./index.js"
+  },
+  "keywords": [
+    "weather",
+    "openweather",
+    "cli"
+  ],
+  "dependencies": {
+    "commander": "^8.1.0",
+    "dotenv": "^10.0.0",
+    "minimist": "^1.2.5",
+    "zx": "3.0.0"
+  },
+  "author": "Alex Rose",
+  "license": "MIT"
+}
