@@ -149,7 +149,7 @@ async function getWeather(city, unit, lang, weatherFlag) {
     let response = await fetch('https://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid=' + process.env.api_key + '&units=' + unit + '&lang=' + lang);
     let weather = await response.json();
 
-    if (weatherFlag == undefined) {
+    if (weatherFlag === true) {
         console.log(chalk.inverse('Basic Weather: \n')
             + chalk.underline('Temperature:') + ' ' + weather.main.temp + '\n'
             + chalk.underline('Feels like:') + ' ' + weather.main.feels_Like + '\n'
