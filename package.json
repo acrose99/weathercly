@@ -1,14 +1,14 @@
 {
-  "name": "weathercly",
+  "name": "weatherclitest",
   "version": "1.0.0",
   "description": "A cli for getting the weather",
-  "main": "index.js",
+  "main": "weathercli.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "weathercly": "./index.js"
+    "weathercly": "weathercly.js"
   },
   "keywords": [
     "weather",
@@ -16,11 +16,19 @@
     "cli"
   ],
   "dependencies": {
-    "commander": "^8.1.0",
     "dotenv": "^10.0.0",
     "minimist": "^1.2.5",
     "zx": "3.0.0"
   },
   "author": "Alex Rose",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/acrose99/weathercly.git"
+  },
+  "bugs": {
+    "url": "https://github.com/acrose99/weathercly/issues"
+  },
+  "homepage": "https://github.com/acrose99/weathercly#readme"
 }

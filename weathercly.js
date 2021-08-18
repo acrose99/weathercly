@@ -281,8 +281,27 @@ void async function () {
         process.exit(0);
     }
 
+    /* Check if the user passed the key flag, if so, create an .env file with the key, print the key and exit */
+    if (argv['k']) {
+        let key = argv['k'];
+        await fs.writeFileSync(__dirname + '.env', 'api_key=' + key, (err) => {
+            if (err) {
+                console.log(chalk.red('Error: ' + err));
+                process.exit(1);
+            }
+        });
+        console.log(chalk.green('Key saved.'));
+        process.exit(0);
+    }
+
+    /* Check if the user has a vald key in the .env file, if not, exit */
+    if (!process.env.api_key && !argv['k']) {
+        console.log(chalk.red('Error: No API key found. Please provide an API key with the -k flag'));
+        process.exit(1);
+    }
+
     /* Check if the user passed the weather or forecast flag, if not, exit the process */
-    if (!argv['w'] && !argv['f']) {
+    if (!argv['w'] && !argv['f'] && !argv['k']) {
         console.log(chalk.red('Error, no weather or forecast flag passed. Use -h or --help for more info.'));
         process.exit(1);
     }
