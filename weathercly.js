@@ -64,7 +64,7 @@ function parseWeather(arg, weather) {
         gust: weather.wind.gust
     }
     let main = {
-        description: weather.weather.description,
+        description: weather.weather[0].description,
         humidity: weather.main.humidity,
         pressure: weather.main.pressure,
         sea_level: weather.main.sea_level,
