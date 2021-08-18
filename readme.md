@@ -6,17 +6,9 @@ A simple node/zx cli app to get the weather and weather forecast for any locatio
 ```
 $ npm install -g weathercly
 $ weathercly -k <api_key>
-$ weathercly -w t -c Chicago -u metric
+```
+![weathercly](https://user-images.githubusercontent.com/29925867/129984618-182166fa-086a-49bc-823f-3c01a8c02fc4.gif)
 
-Using the city of: Chicago
-Weather:
-Temperature: 28
-```
-## Examples
-```
-$ weathercly
-/* output */
-```
 
 ## Usage/Options
 ```
