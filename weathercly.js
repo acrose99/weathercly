@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+/* eslint-disable no-undef */
+// eslint-disable-next-line no-unused-vars
 import * as zx from 'zx'
 import * as M from 'module'
 import minimist from 'minimist';
