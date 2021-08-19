@@ -11,6 +11,7 @@ const path = require('path');
 import { fileURLToPath } from 'url';
 $.verbose = false; //avoids showing the curl requests in the terminal
 const __dirname = fileURLToPath(import.meta.url);
+const API_URL = 'https://weatherclyapi.vercel.app/api/weather?';
 dotenv.config({ path: path.resolve(__dirname, '../.env') }); // necessary for the cli to work outside of the project
 
 async function getUnit(unitFlag) {
@@ -59,6 +60,9 @@ function getLang(langFlag) {
             return 'en';
         }
     }
+    else {
+        return 'en';
+    }
 }
 async function getIP() {
     console.log(chalk.hex('#719c9a').bold("Fetching your IP: for your location..."));
@@ -73,162 +77,164 @@ async function getCity() {
     let city = await cityJson.text();
     return city;
 }
-function parseWeather(arg, weather) {
-    let temperature = {
-        temperature: Math.round(weather.main.temp),
-        feelslike: Math.round(weather.main.feels_like),
-        temp_min: Math.round(weather.main.temp_min),
-        temp_max: Math.round(weather.main.temp_max)
-    }
-    let wind = {
-        speed: weather.wind.speed,
-        deg: weather.wind.deg,
-        gust: weather.wind.gust
-    }
-    let main = {
-        description: weather.weather[0].description,
-        humidity: weather.main.humidity,
-        pressure: weather.main.pressure,
-        sea_level: weather.main.sea_level,
-        grnd_level: weather.main.grnd_level
-    }
+// function parseWeather(arg, weather) {
+//     let temperature = {
+//         temperature: Math.round(weather.main.temp),
+//         feelslike: Math.round(weather.main.feels_like),
+//         temp_min: Math.round(weather.main.temp_min),
+//         temp_max: Math.round(weather.main.temp_max)
+//     }
+//     let wind = {
+//         speed: weather.wind.speed,
+//         deg: weather.wind.deg,
+//         gust: weather.wind.gust
+//     }
+//     let main = {
+//         description: weather.weather[0].description,
+//         humidity: weather.main.humidity,
+//         pressure: weather.main.pressure,
+//         sea_level: weather.main.sea_level,
+//         grnd_level: weather.main.grnd_level
+//     }
 
-    // let rain = { //add later
-    //     rain1h: weather.rain.1h,
-    //     rain3h: weather.rain.3h
-    // }
+//     // let rain = { //add later
+//     //     rain1h: weather.rain.1h,
+//     //     rain3h: weather.rain.3h
+//     // }
 
-    // let snow = { //add later
-    //     snow1h: weather.snow.1h,
-    //     snow3h: weather.snow.3h
-    // }
+//     // let snow = { //add later
+//     //     snow1h: weather.snow.1h,
+//     //     snow3h: weather.snow.3h
+//     // }
 
-    let clouds = {
-        all: weather.clouds.all + '%'
-    }
-    let sys = {
-        sunrise: weather.sys.sunrise,
-        sunset: weather.sys.sunset
-    }
+//     let clouds = {
+//         all: weather.clouds.all + '%'
+//     }
+//     let sys = {
+//         sunrise: weather.sys.sunrise,
+//         sunset: weather.sys.sunset
+//     }
 
-    if (arg == 'temperature' || arg == 'Temperature' || arg == 't') {
-        console.log(chalk.inverse('Temperature:') + ' ' + temperature.temperature + '\n');
-    }
-    else if (arg == 'tempMin' || arg == 'TempMin' || arg == 'tm') {
-        console.log(chalk.inverse('Temp min:') + ' ' + temperature.temp_min + '\n');
-    }
-    else if (arg == 'tempMax' || arg == 'TempMax' || arg == 'tx') {
-        console.log(chalk.inverse('Temp max:') + ' ' + temperature.temp_max + '\n');
-    }
-    else if (arg == 'feelsLike' || arg == 'FeelsLike' || arg == 'fl') {
-        console.log(chalk.inverse('Feels like:') + ' ' + temperature.feelslike + '\n');
-    }
-    else if (arg == 'humidity' || arg == 'Humidity' || arg == 'h') {
-        console.log(chalk.inverse('Humidity:') + ' ' + main.humidity + '\n');
-    }
-    else if (arg == 'pressure' || arg == 'Pressure' || arg == 'p') {
-        console.log(chalk.inverse('Pressure:') + ' ' + main.pressure + '\n');
-    }
-    else if (arg == 'description' || arg == 'Description' || arg == 'd') {
-        console.log(chalk.inverse('Description:') + ' ' + main.description + '\n');
-    }
-    else if (arg == 'windSpeed' || arg == 'WindSpeed' || arg == 'ws') {
-        console.log(chalk.inverse('Wind speed:') + ' ' + wind.speed + '\n');
-    }
-    else if (arg == 'windDeg' || arg == 'WindDeg' || arg == 'wd') {
-        console.log(chalk.inverse('Wind deg:') + ' ' + wind.deg + '\n');
-    }
-    else if (arg == 'windGust' || arg == 'WindGust' || arg == 'wg') {
-        console.log(chalk.inverse('Wind gust:') + ' ' + wind.gust + '\n');
-    }
-    else if (arg == 'wind' || arg == 'Wind' || arg == 'w') {
-        console.log(chalk.inverse('Wind speed:') + ' ' + wind.speed + '\n');
-        console.log(chalk.inverse('Wind deg:') + ' ' + wind.deg + '\n');
-        console.log(chalk.inverse('Wind gust:') + ' ' + wind.gust + '\n');
-    }
-    else if (arg == 'cloud' || arg == 'Cloud' || arg == 'c') {
-        console.log(chalk.inverse('Cloud:') + ' ' + clouds.all + '\n');
-    }
-    // else if (arg == 'snow' || arg == 'Snow' || arg == 's') {
-    //     console.log(chalk.inverse('Snow:') + ' ' + snow.snow1h + '\n');
-    //     console.log(chalk.inverse('Snow:') + ' ' + snow.snow3h + '\n');
-    // }
-    // else if (arg == 'rain' || arg == 'Rain' || arg == 'r') {
-    //     console.log(chalk.inverse('Rain Volume (1h):') + ' ' + rain.r1h + '\n');
-    //     console.log(chalk.inverse('Rain Volume (3h):') + ' ' + rain.r3h + '\n');
-    // }
-    else if (arg == 'sunrise' || arg == 'Sunrise' || arg == 'sr') {
-        console.log(chalk.inverse('Sunrise:') + ' ' + sys.sunrise + '\n');
-    }
-    else if (arg == 'sunset' || arg == 'Sunset' || arg == 'ss') {
-        console.log(chalk.inverse('Sunset:') + ' ' + sys.sunset + '\n');
-    }
-    else {
-        console.log(chalk.red('Error, incorrect flag argument'));
-    }
-}
+//     if (arg == 'temperature' || arg == 'Temperature' || arg == 't') {
+//         console.log(chalk.inverse('Temperature:') + ' ' + temperature.temperature + '\n');
+//     }
+//     else if (arg == 'tempMin' || arg == 'TempMin' || arg == 'tm') {
+//         console.log(chalk.inverse('Temp min:') + ' ' + temperature.temp_min + '\n');
+//     }
+//     else if (arg == 'tempMax' || arg == 'TempMax' || arg == 'tx') {
+//         console.log(chalk.inverse('Temp max:') + ' ' + temperature.temp_max + '\n');
+//     }
+//     else if (arg == 'feelsLike' || arg == 'FeelsLike' || arg == 'fl') {
+//         console.log(chalk.inverse('Feels like:') + ' ' + temperature.feelslike + '\n');
+//     }
+//     else if (arg == 'humidity' || arg == 'Humidity' || arg == 'h') {
+//         console.log(chalk.inverse('Humidity:') + ' ' + main.humidity + '\n');
+//     }
+//     else if (arg == 'pressure' || arg == 'Pressure' || arg == 'p') {
+//         console.log(chalk.inverse('Pressure:') + ' ' + main.pressure + '\n');
+//     }
+//     else if (arg == 'description' || arg == 'Description' || arg == 'd') {
+//         console.log(chalk.inverse('Description:') + ' ' + main.description + '\n');
+//     }
+//     else if (arg == 'windSpeed' || arg == 'WindSpeed' || arg == 'ws') {
+//         console.log(chalk.inverse('Wind speed:') + ' ' + wind.speed + '\n');
+//     }
+//     else if (arg == 'windDeg' || arg == 'WindDeg' || arg == 'wd') {
+//         console.log(chalk.inverse('Wind deg:') + ' ' + wind.deg + '\n');
+//     }
+//     else if (arg == 'windGust' || arg == 'WindGust' || arg == 'wg') {
+//         console.log(chalk.inverse('Wind gust:') + ' ' + wind.gust + '\n');
+//     }
+//     else if (arg == 'wind' || arg == 'Wind' || arg == 'w') {
+//         console.log(chalk.inverse('Wind speed:') + ' ' + wind.speed + '\n');
+//         console.log(chalk.inverse('Wind deg:') + ' ' + wind.deg + '\n');
+//         console.log(chalk.inverse('Wind gust:') + ' ' + wind.gust + '\n');
+//     }
+//     else if (arg == 'cloud' || arg == 'Cloud' || arg == 'c') {
+//         console.log(chalk.inverse('Cloud:') + ' ' + clouds.all + '\n');
+//     }
+//     // else if (arg == 'snow' || arg == 'Snow' || arg == 's') {
+//     //     console.log(chalk.inverse('Snow:') + ' ' + snow.snow1h + '\n');
+//     //     console.log(chalk.inverse('Snow:') + ' ' + snow.snow3h + '\n');
+//     // }
+//     // else if (arg == 'rain' || arg == 'Rain' || arg == 'r') {
+//     //     console.log(chalk.inverse('Rain Volume (1h):') + ' ' + rain.r1h + '\n');
+//     //     console.log(chalk.inverse('Rain Volume (3h):') + ' ' + rain.r3h + '\n');
+//     // }
+//     else if (arg == 'sunrise' || arg == 'Sunrise' || arg == 'sr') {
+//         console.log(chalk.inverse('Sunrise:') + ' ' + sys.sunrise + '\n');
+//     }
+//     else if (arg == 'sunset' || arg == 'Sunset' || arg == 'ss') {
+//         console.log(chalk.inverse('Sunset:') + ' ' + sys.sunset + '\n');
+//     }
+//     else {
+//         console.log(chalk.red('Error, incorrect flag argument'));
+//     }
+// }
 async function getWeather(city, unit, lang, weatherFlag) {
-    let response = await fetch('https://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid=' + process.env.api_key + '&units=' + unit + '&lang=' + lang);
-    let weather = await response.json();
-
+    let response = await fetch(API_URL + 'city=' + city + '&unit=' + unit + '&lang=' + lang + '&weatherFlag=' + weatherFlag);
+    let weatherJSON = await response.json();
+    let weather = weatherJSON.weather;
     if (weatherFlag === true) {
         console.log(chalk.inverse('Basic Weather: \n')
-            + chalk.underline('Temperature:') + ' ' + weather.main.temp + '\n'
-            + chalk.underline('Feels like:') + ' ' + weather.main.feels_Like + '\n'
-            + chalk.underline('Description:') + ' ' + weather.weather[0].description + '\n'
-            + chalk.underline('Wind:') + ' ' + weather.wind.speed + '\n'
-            + chalk.underline('Humidity:') + ' ' + weather.main.humidity + '\n'
-            + chalk.underline('Pressure:') + ' ' + weather.main.pressure
+            + chalk.underline('Temperature:') + ' ' + weather.temperature + '\n'
+            + chalk.underline('Feels like:') + ' ' + weather.feelsLike + '\n'
+            + chalk.underline('Description:') + ' ' + weather.description + '\n'
+            + chalk.underline('Wind Speed:') + ' ' + weather.windSpeed + '\n'
+            + chalk.underline('Humidity:') + ' ' + weather.humidity + '\n'
+            + chalk.underline('Pressure:') + ' ' + weather.pressure
         );
     }
-    else if (weatherFlag instanceof Array) {
-        weatherFlag.forEach(arg => {
-            parseWeather(arg, weather);
-        });
+    else if (weatherFlag.split(',').length > 1) {
+        console.log(chalk.cyan.underline('Weather:\n'));
+        let weatherFlags = weatherFlag.split(',');
+        for (let i = 0; i < weatherFlags.length; i++) {
+            console.log(chalk.green(JSON.stringify(weather[i])) + '\n');
+        }
     }
     else {
-        parseWeather(weatherFlag, weather);
+        console.log(chalk.cyan.underline('Weather:\n'));
+        console.log(chalk.green(JSON.stringify(weather, null, 2)));
     }
 }
-function parseForecast(arg, forecast) {
-    if (arg.includes('h') || arg.includes('hourly') || arg.includes('Hourly')) {
-        let hour = arg.split('=')[1];
-        if (hour > 48) {
-            console.log(chalk.red('Error, max hour forecast is 48'));
-            process.exit();
-        }
-        console.log(chalk.inverse('Hourly Forecast for ' + hour + ' hours from now: \n'))
-        console.log(forecast.hourly[hour]);
-    }
-    else if (arg.includes('d') || arg.includes('daily') || arg.includes('Daily')) {
-        let day = arg.split('=')[1];
-        if (day > 7) {
-            console.log(chalk.red('Error, max day is 7'));
-            process.exit();
-        }
-        console.log(chalk.inverse('Daily Forecast for ' + day + ' days from now: \n'))
-        console.log(forecast.daily[day]);
-    }
-    else {
-        console.log(chalk.red('Error, incorrect flag argument supplied to forecast. Use -d/--daily or -h/--hourly'));
-        process.exit();
-    }
-}
+// function parseForecast(arg, forecast) {
+//     if (arg.includes('h') || arg.includes('hourly') || arg.includes('Hourly')) {
+//         let hour = arg.split('=')[1];
+//         if (hour > 48) {
+//             console.log(chalk.red('Error, max hour forecast is 48'));
+//             process.exit();
+//         }
+//         console.log(chalk.inverse('Hourly Forecast for ' + hour + ' hours from now: \n'))
+//         console.log(forecast.hourly[hour]);
+//     }
+//     else if (arg.includes('d') || arg.includes('daily') || arg.includes('Daily')) {
+//         let day = arg.split('=')[1];
+//         if (day > 7) {
+//             console.log(chalk.red('Error, max day is 7'));
+//             process.exit();
+//         }
+//         console.log(chalk.inverse('Daily Forecast for ' + day + ' days from now: \n'))
+//         console.log(forecast.daily[day]);
+//     }
+//     else {
+//         console.log(chalk.red('Error, incorrect flag argument supplied to forecast. Use -d/--daily or -h/--hourly'));
+//         process.exit();
+//     }
+// }
 async function getForecast(city, unit, lang, forecastFlag) {
-    let gecoding = await fetch('https://api.openweathermap.org/geo/1.0/direct?q=' + city + '&appid=' + process.env.api_key);
-    let gecodingJson = await gecoding.json();
-    let lat = gecodingJson[0].lat;
-    let lon = gecodingJson[0].lon;
-    let response = await fetch('https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&exclude={current, minutely, alerts}' + '&appid=' + process.env.api_key + '&units=' + unit + '&lang=' + lang);
-    let forecast = await response.json();
-    if (forecastFlag instanceof Array) {
-        forecastFlag.forEach(arg => {
-            parseForecast(arg, forecast);
-        });
-    }
-    else {
-        parseForecast(forecastFlag, forecast);
-    }
+    let response = await fetch(API_URL + 'city=' + city + '&unit=' + unit + '&lang=' + lang + '&forecastFlag=' + forecastFlag);
+    let forecastJSON = await response.json();
+    let forecast = forecastJSON.response;
+    console.log(chalk.cyan.underline('Forecast:\n'));
+    console.log(chalk.green(JSON.stringify(forecast, null, 2)));
+}
+
+// TODO: Implement this
+// eslint-disable-next-line no-unused-vars 
+async function getWeatherAndForecast(city, unit, lang, weatherFlag, forecastFlag) {
+    let response = await fetch(API_URL + 'city=' + city + '&unit=' + unit + '&lang=' + lang + '&weatherFlag=' + weatherFlag + '&forecastFlag=' + forecastFlag);
+    let weatherAndForecast = await response.json();
+    return weatherAndForecast;
 }
 
 void async function () {
@@ -303,38 +309,15 @@ void async function () {
         process.exit(0);
     }
 
-    /* Check if the user passed the key flag, if so, create an .env file with the key, print the key and exit */
-    if (argv['k']) {
-        let key = argv['k'];
-        await fs.writeFileSync(path.resolve(__dirname, '../.env'), 'api_key=' + key, (err) => {
-            if (err) {
-                console.log(chalk.red('Error: ' + err));
-                process.exit(1);
-            }
-        });
-        console.log(chalk.green('Key saved.'));
-        process.exit(0);
-    }
-
-    /* Check if the user has a vald key in the .env file, if not, exit */
-    if (!process.env.api_key && !argv['k']) {
-        console.log(chalk.red('Error: No API key found. Please provide an API key with the -k flag'));
-        process.exit(1);
-    }
 
     /* Check if the user passed the weather or forecast flag, if not, exit the process */
     if (!argv['w'] && !argv['f'] && !argv['k']) {
         console.log(chalk.red('Error, no weather or forecast flag passed. Use -h or --help for more info.'));
         process.exit(1);
     }
-
-
-    /* Requires the installation of the dotenv package, since zx does not allow adding env variables outside of the files scope, which causes security flaws with the api key */
-    console.log("Using key: " + process.env.api_key);
     // console.log(process.argv);
     let unit = await getUnit(argv['u']);
     let lang = await getLang(argv['l']);
-
     let city;
     if (argv['c'] == undefined) {
         city = await getCity();
@@ -348,21 +331,17 @@ void async function () {
     let forecastFlag = argv['f'];
 
     if (argv['w'] != undefined && argv['f'] != undefined) {
-        console.log(chalk.underline.magenta('Weather:\n'));
         await getWeather(city, unit, lang, weatherFlag);
-        console.log(chalk.underline.magenta('Forecast:\n'));
         getForecast(city, unit, lang, forecastFlag);
     }
     else if (argv['w'] != undefined) {
-        console.log(chalk.underline.magenta('Weather:\n'));
         getWeather(city, unit, lang, weatherFlag);
     }
     else if (argv['f'] != undefined) {
-        console.log(chalk.underline.magenta('Forecast:\n'));
         getForecast(city, unit, lang, forecastFlag);
     }
     else {
         console.log(chalk.red('Error'));
         process.exit(1);
     }
-}();
+}()

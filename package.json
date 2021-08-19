@@ -1,6 +1,6 @@
 {
-  "name": "weatherclitest",
-  "version": "1.6.0",
+  "name": "weathercly",
+  "version": "0.0.1",
   "description": "A cli for getting the weather",
   "main": "weathercly.js",
   "type": "module",

@@ -9,14 +9,13 @@ A simple node/zx cli app to get the weather and weather forecast for any locatio
 2. [Create an API key or use the Default key at](https://home.openweathermap.org/api_keys)
 ```
 $ npm install -g weathercly
-$ weathercly -k <api_key>
-$ weathercly -w
+$ weathercly -w t -u imperial
 ```
 
 
 ## Usage/Options
 ```
-$ weathercly -w/--weather [args] -f/--forecast [args] -c/--city [string] -u/--unit [string] -l/--lang [string]
+$ weathercly -w/--weather [arg1, arg2, ...] -f/--forecast [arg1, arg2, ...] -c/--city [string] -u/--unit [string] -l/--lang [string]
 
 -w/--weather: Current weather conditions.
 
