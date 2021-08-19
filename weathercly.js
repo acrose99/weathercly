@@ -12,7 +12,6 @@ import { fileURLToPath } from 'url';
 $.verbose = false; //avoids showing the curl requests in the terminal
 const __dirname = fileURLToPath(import.meta.url);
 dotenv.config({ path: path.resolve(__dirname, '../.env') }); // necessary for the cli to work outside of the project
-
 async function getUnit(unitFlag) {
     function saveUnit() {
         fs.writeFileSync(path.resolve(__dirname, '../.env'), '\nunit=' + unitFlag, { 'flag': 'a' }, (err) => {
@@ -241,6 +240,7 @@ void async function () {
             u: 'unit',
             l: 'lang',
             h: 'help',
+            k: 'key',
             v: 'version'
         }
     })
