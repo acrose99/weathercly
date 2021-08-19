@@ -2,7 +2,7 @@
   "name": "weatherclitest",
   "version": "1.6.0",
   "description": "A cli for getting the weather",
-  "main": "weathercli.js",
+  "main": "weathercly.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

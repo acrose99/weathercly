@@ -13,14 +13,34 @@ $.verbose = false; //avoids showing the curl requests in the terminal
 const __dirname = fileURLToPath(import.meta.url);
 dotenv.config({ path: path.resolve(__dirname, '../.env') }); // necessary for the cli to work outside of the project
 
-function getUnit(unitFlag) {
-    if (unitFlag == undefined || unitFlag == 'standard') {
+async function getUnit(unitFlag) {
+    function saveUnit() {
+        fs.writeFileSync(path.resolve(__dirname, '../.env'), '\nunit=' + unitFlag, { 'flag': 'a' }, (err) => {
+            if (err) {
+                console.log(chalk.red('Error: ' + err));
+                process.exit(1);
+            }
+        });
+    }
+    if (unitFlag == undefined) {
+        if (process.env.unit !== undefined) {
+            return process.env.unit;
+        }
+        else {
+            console.log(chalk.red("\nNo unit specified, defaulting to standard"));
+            return 'standard';
+        }
+    }
+    else if (unitFlag == 'standard' || unitFlag == 's') {
+        await saveUnit();
         return 'standard';
     }
     else if (unitFlag == 'metric' || unitFlag == 'm') {
+        await saveUnit();
         return 'metric';
     }
     else if (unitFlag == 'imperial' || unitFlag == 'i') {
+        await saveUnit();
         return 'imperial';
     }
     else {

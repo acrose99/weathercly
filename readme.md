@@ -51,7 +51,7 @@ If none are selected, all will be returned
 
 -c/--city: The city you want to get the weather for, if not provided, the default will be the user's location.
 
--m/--measurement: The units of measurement you want to use for the returned values
+-m/--measurement: The units of measurement you want to use for the returned values. Defaults to standard. An env variable is automatically set to the latest measurement passed by the user, so you dont have to specify it more than once.
 
 s, standard : Standard units of measurement
 m, metric : Metric units of measurement
